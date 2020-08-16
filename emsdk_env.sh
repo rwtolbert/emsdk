@@ -15,10 +15,25 @@
 #
 # which won't have any effect.
 if [ -z "$BASH_SOURCE" ]; then
-  if [ ! -f "./emsdk.py" ]; then
+  D1=`dirname $0`
+  DIR=`cd $D1 && pwd`
+  S=`basename $0`
+
+  READLINK=`which readlink`
+  if [ -x "$READLINK" ] ; then
+    DLINK=`readlink $D1/$S`
+    if [ "$DLINK" != "" ] ; then
+      D1=`dirname $DLINK`
+      DIR=`cd $D1 && pwd`
+    fi
+  fi
+  if [ ! -f "$DIR/emsdk.py" ]; then
     echo "error: You must be in the same directory as emsdk_env.sh when sourcing it (or switch to the bash shell)" 1>&2
   fi
-  DIR="."
+  unset S
+  unset D1
+  unset DLINK
+  unset READLINK
 else
   DIR="$(dirname "$BASH_SOURCE")"
 fi
