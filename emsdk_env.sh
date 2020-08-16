@@ -1,6 +1,11 @@
 # This script is sourced by the user and uses
-# their shell. Try not to use bashisms.
-
+# their shell.
+#
+# This script tries to find its location but
+# this does not work in every shell.
+#
+# It is known to work in bash and zsh
+#
 # Do not execute this script without sourcing,
 # because it won't have any effect then.
 # That is, always run this script with
@@ -27,13 +32,18 @@ if [ -z "$BASH_SOURCE" ]; then
       DIR=`cd $D1 && pwd`
     fi
   fi
-  if [ ! -f "$DIR/emsdk.py" ]; then
-    echo "error: You must be in the same directory as emsdk_env.sh when sourcing it (or switch to the bash shell)" 1>&2
-  fi
   unset S
   unset D1
   unset DLINK
   unset READLINK
+  if [ ! -f "$DIR/emsdk.py" ]; then
+    echo "Error: unable to determine 'emsdk' directory. Perhaps you are using a shell or" 1>&2
+    echo "       environment that this script does not support." 1>&2
+    echo "One possible solution is to source this script while in the 'emsdk' directory." 1>&2
+    echo 1>&2
+    unset DIR
+    return
+  fi
 else
   DIR="$(dirname "$BASH_SOURCE")"
 fi
