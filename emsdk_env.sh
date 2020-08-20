@@ -47,6 +47,7 @@ if [ -n "$CURRENT_SCRIPT" ]; then
     unset FULLDIR
   fi
 fi
+unset CURRENT_SCRIPT
 
 if [ ! -f "$DIR/emsdk.py" ]; then
   echo "Error: unable to determine 'emsdk' directory. Perhaps you are using a shell or" 1>&2
@@ -60,5 +61,4 @@ fi
 
 # Force emsdk to use bash syntax so that this works in windows + bash too
 eval `EMSDK_BASH=1 $DIR/emsdk construct_env`
-unset CURRENT_SCRIPT
 unset DIR
